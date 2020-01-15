@@ -1,13 +1,61 @@
 package library;
+
+import java.util.*;
+
 public class Library {
-    // Add the missing implementation to this class
+    
+    String libraryAddress;
+    ArrayList<Book> books;
+   
+    public Library(String address) {
+        libraryAddress = address;
+        books = new ArrayList<Book>();
+    }
+    
+    public static void printOpeningHours() {
+        System.out.println("Libraries are open daily from 9am to 5pm.");
+    }
+    
+    public void printAddress() {
+        System.out.println(libraryAddress);
+    }
+
+//     NOT SURE HOW TO CALL CONSTRUCTOR FROM WITHIN METHOD PARAMETER
+    public void addBook(Book book) {
+        books.add(book);
+//        System.out.println("created " + book.title);  // Testing
+    }
+    
+//    public void borrowBook(String bookTitle) {
+//        if ()
+//        
+//    
+//    
+//    }
+//        
+//    public void returnBook(String bookTitle) {
+//        //
+//    }
+//    
+    public void printAvailableBooks() {
+        List<String> availableBooks = new ArrayList<String>();
+        for (int i = 0; i < books.size(); i++) {
+            if (! books.get(i).isBorrowed()) {
+                 availableBooks.add(books.get(i).title);
+            }
+        }
+        System.out.println(availableBooks);
+    }
+    
 
     public static void main(String[] args) {
-        // Create two libraries
+        // Create two libraries        
+//        Library testLib = new Library("10 st");  // AK Test
+        
         Library firstLibrary = new Library("10 Main St.");
         Library secondLibrary = new Library("228 Liberty St.");
 
-        // Add four books to the first library
+//         Add four books to the first library
         firstLibrary.addBook(new Book("The Da Vinci Code"));
         firstLibrary.addBook(new Book("Le Petit Prince"));
         firstLibrary.addBook(new Book("A Tale of Two Cities"));
@@ -23,27 +71,27 @@ public class Library {
         secondLibrary.printAddress();
         System.out.println();
 
-        // Try to borrow The Lords of the Rings from both libraries
-        System.out.println("Borrowing The Lord of the Rings:");
-        firstLibrary.borrowBook("The Lord of the Rings");
-        firstLibrary.borrowBook("The Lord of the Rings");
-        secondLibrary.borrowBook("The Lord of the Rings");
-        System.out.println();
-
-        // Print the titles of all available books from both libraries
-        System.out.println("Books available in the first library:");
-        firstLibrary.printAvailableBooks();
-        System.out.println();
-        System.out.println("Books available in the second library:");
-        secondLibrary.printAvailableBooks();
-        System.out.println();
-
-        // Return The Lords of the Rings to the first library
-        System.out.println("Returning The Lord of the Rings:");
-        firstLibrary.returnBook("The Lord of the Rings");
-        System.out.println();
-
-        // Print the titles of available from the first library
+//        // Try to borrow The Lords of the Rings from both libraries
+//        System.out.println("Borrowing The Lord of the Rings:");
+//        firstLibrary.borrowBook("The Lord of the Rings");
+//        firstLibrary.borrowBook("The Lord of the Rings");
+//        secondLibrary.borrowBook("The Lord of the Rings");
+//        System.out.println();
+//
+//        // Print the titles of all available books from both libraries
+//        System.out.println("Books available in the first library:");
+//        firstLibrary.printAvailableBooks();
+//        System.out.println();
+//        System.out.println("Books available in the second library:");
+//        secondLibrary.printAvailableBooks();
+//        System.out.println();
+//
+//        // Return The Lords of the Rings to the first library
+//        System.out.println("Returning The Lord of the Rings:");
+//        firstLibrary.returnBook("The Lord of the Rings");
+//        System.out.println();
+//
+//        // Print the titles of available from the first library
         System.out.println("Books available in the first library:");
         firstLibrary.printAvailableBooks();
     }
