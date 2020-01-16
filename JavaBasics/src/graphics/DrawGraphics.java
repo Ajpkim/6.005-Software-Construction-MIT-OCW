@@ -27,8 +27,8 @@ public class DrawGraphics {
     public void draw(Graphics surface) {
         surface.drawLine(50, 50, 250, 250);
         surface.draw3DRect(50, 50, 100, 100, true);
-        surface.drawString("YOOOO", 100, 90);
-        surface.drawArc(95, 60, 50, 50, 90, 360);
+        surface.drawString("BELLA SMELLS", 100, 30);
+        surface.drawArc(95, 03, 95, 50, 90, 360);
         surface.fillOval(180, 180, 25, 30);
         
         
