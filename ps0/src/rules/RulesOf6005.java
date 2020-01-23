@@ -1,4 +1,4 @@
-/* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
+                                                                                /* Copyright (c) 2007-2016 MIT 6.005 course staff, all rights reserved.
  * Redistribution of original or derived work requires permission of course staff.
  */
 package rules;
@@ -36,9 +36,18 @@ public class RulesOf6005 {
             boolean availableToOthers, boolean writtenAsCourseWork,
             boolean citingYourSource, boolean implementationRequired) {
         
-        // TODO: Fill in this method, then remove the exception
-        
-        throw new RuntimeException("implement me!");
+        if (! writtenByYourself) {
+            if (! availableToOthers) {
+                return false;
+            }
+            if (writtenAsCourseWork) {
+                return false;
+            }
+            if (! citingYourSource) {
+                return false;
+            }
+        }
+        return true;
     }
     
     /**
