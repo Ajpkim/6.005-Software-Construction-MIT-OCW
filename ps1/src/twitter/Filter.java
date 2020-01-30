@@ -3,6 +3,9 @@
  */
 package twitter;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,7 +30,18 @@ public class Filter {
      *         in the same order as in the input list.
      */
     public static List<Tweet> writtenBy(List<Tweet> tweets, String username) {
-        throw new RuntimeException("not implemented");
+
+        List<Tweet> writtenBy = new ArrayList<Tweet>();
+//        List<Tweet> writtenBy = Arrays.asList();  // Doesn't work for some reason
+        
+        for (Tweet tweet : tweets) {
+            
+//            if (tweet.getAuthor().toLowerCase() == username.toLowerCase())  // doesn't work for some reason?
+            if (tweet.getAuthor().equalsIgnoreCase(username)) {
+                writtenBy.add(tweet);
+            }
+        }
+    return writtenBy;    
     }
 
     /**
@@ -41,7 +55,17 @@ public class Filter {
      *         in the same order as in the input list.
      */
     public static List<Tweet> inTimespan(List<Tweet> tweets, Timespan timespan) {
-        throw new RuntimeException("not implemented");
+        List<Tweet> matches = new ArrayList<Tweet>();
+        
+        Instant start = timespan.getStart();
+        Instant end = timespan.getEnd();
+        
+        for (Tweet tweet : tweets) {
+           if (tweet.getTimestamp().isAfter(start) & tweet.getTimestamp().isBefore(end)) {
+               matches.add(tweet);
+           }
+        }
+        return matches;
     }
 
     /**
@@ -60,7 +84,20 @@ public class Filter {
      *         same order as in the input list.
      */
     public static List<Tweet> containing(List<Tweet> tweets, List<String> words) {
-        throw new RuntimeException("not implemented");
+        List<Tweet> matches = new ArrayList<Tweet>();
+        
+        for(Tweet tweet : tweets) {
+            String text = tweet.getText().toLowerCase();
+            
+            for (String word : words) {
+                word = word.toLowerCase();
+            
+                if (text.contains(word)) {
+                    matches.add(tweet);
+                }
+            }
+        }
+        return matches;
     }
 
 }
