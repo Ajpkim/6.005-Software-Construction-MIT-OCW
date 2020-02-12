@@ -109,6 +109,8 @@ public class Extract {
                         break;
                     }
                 }   
+//                possibleMention = possibleMention.toLowerCase();
+                
                 // add valid mentions to set
                 if (checkUsernameValidity(possibleMention)) {
                     tweetMentions.add(possibleMention);

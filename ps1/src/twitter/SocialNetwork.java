@@ -3,9 +3,17 @@
  */
 package twitter;
 
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.Comparator;
 
 /**
  * SocialNetwork provides methods that operate on a social network.
@@ -41,7 +49,22 @@ public class SocialNetwork {
      *         either authors or @-mentions in the list of tweets.
      */
     public static Map<String, Set<String>> guessFollowsGraph(List<Tweet> tweets) {
-        throw new RuntimeException("not implemented");
+        
+        Map<String, Set<String>> followsGraph = new HashMap<String, Set<String>>();
+        Set<String> authors = new HashSet<String>();
+        
+        for (Tweet tweet : tweets) {            
+            authors.add(tweet.getAuthor().toLowerCase());
+        }
+        
+        for (String author : authors) {
+            Set<String> mentions = new HashSet<String>();
+            mentions.addAll(Extract.getMentionedUsers(Filter.writtenBy(tweets, author)));
+            
+            followsGraph.put(author, mentions);
+        }
+        
+        return followsGraph;
     }
 
     /**
@@ -54,7 +77,37 @@ public class SocialNetwork {
      *         descending order of follower count.
      */
     public static List<String> influencers(Map<String, Set<String>> followsGraph) {
-        throw new RuntimeException("not implemented");
-    }
+        
+        /* 
+         * - create new map that maps username to number of followers
+         * - for each key in followsGraph, add all the new influencers to map and then increment once 
+         * - return keys of influencers map in descending order of follower count
+         */
+        Map<String, Integer> influencersGraph = new HashMap<String, Integer>();
 
+        for (Set<String> mentions : followsGraph.values()) {
+            for (String influencer : mentions) {
+                String influencerLower = influencer.toLowerCase();
+                if (!influencersGraph.containsKey(influencerLower)){
+                    influencersGraph.put(influencerLower, 1);
+                } else {
+                    influencersGraph.replace(influencerLower, (influencersGraph.get(influencerLower) + 1));
+                }
+            }
+        }
+        
+        List<Entry<String, Integer>> entriesList = new ArrayList<>();
+        entriesList.addAll(influencersGraph.entrySet());
+        
+        Collections.sort(entriesList, (o1, o2) -> {
+            return o1.getValue() < o2.getValue() ? 1:-1;
+        });
+        
+        List<String> influencers = new ArrayList<>();
+        for (Entry<String, Integer> entry : entriesList) {
+            influencers.add(entry.getKey());
+        }
+        
+        return influencers;
+    }
 }
