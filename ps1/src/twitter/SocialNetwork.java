@@ -61,9 +61,19 @@ public class SocialNetwork {
             Set<String> mentions = new HashSet<String>();
             mentions.addAll(Extract.getMentionedUsers(Filter.writtenBy(tweets, author)));
             
-            followsGraph.put(author, mentions);
+            // additional evidence of influence (problem 4)
+            // if A follows B, and B mentions C, then A is influenced by C
+            // returns influencer graph
+            
+            Set<String> influencers = new HashSet<String>();
+            influencers.addAll(mentions);
+            
+            for (String influencer : mentions) {
+                influencers.addAll(Extract.getMentionedUsers(Filter.writtenBy(tweets, influencer)));
+            }
+            
+            followsGraph.put(author, influencers);
         }
-        
         return followsGraph;
     }
 
