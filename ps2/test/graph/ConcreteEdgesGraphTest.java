@@ -21,7 +21,7 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
      * Provide a ConcreteEdgesGraph for tests in GraphInstanceTest.
      */
     @Override public Graph<String> emptyInstance() {
-        return new ConcreteEdgesGraph();
+        return new ConcreteEdgesGraph<>();
     }
     
     
@@ -52,7 +52,7 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     public void testToStringSingleEdge() {
         Graph<String> graph = emptyInstance();
         graph.set("v1", "v2", 10);
-        Edge e = new Edge("v1", "v2", 10);
+        Edge<String> e = new Edge<String>("v1", "v2", 10);
         
         assertEquals("Vertices: v1, v2" + "\n" + "Edges:" + "\n" + e.toString(), graph.toString());
     }
@@ -68,7 +68,7 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     
     @Test
     public void testEdgeCreation() {
-        Edge e = new Edge("v1", "v2", 10);
+        Edge<String> e = new Edge<String>("v1", "v2", 10);
         
         assertEquals("v1", e.getSource());
         assertEquals("v2", e.getTarget());
@@ -78,7 +78,7 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     
     @Test
     public void testEdgeModify() {
-        Edge e = new Edge("v1", "v2", 10);
+        Edge<String> e = new Edge<String>("v1", "v2", 10);
         e = e.setWeight(20);
         
         assertEquals(20, e.getWeight());
@@ -89,12 +89,12 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     
     @Test(expected=AssertionError.class)
     public void testEdgeCheckRep() {
-        Edge e = new Edge("v1", "v2", -10);
+        Edge<String> e = new Edge<String>("v1", "v2", -10);
     }
     
     @Test
     public void testEdgeCheckRepNoAssertion() {
-        Edge e = new Edge("v1", "v2", 10);
+        Edge<String> e = new Edge<String>("v1", "v2", 10);
     }
 
 }

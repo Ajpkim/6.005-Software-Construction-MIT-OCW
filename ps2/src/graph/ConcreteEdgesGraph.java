@@ -15,10 +15,10 @@ import java.util.Set;
  * 
  * <p>PS2 instructions: you MUST use the provided rep.
  */
-public class ConcreteEdgesGraph implements Graph<String> {
+public class ConcreteEdgesGraph<L> implements Graph<L> {
     
-    private final Set<String> vertices = new HashSet<>();
-    private final List<Edge> edges = new ArrayList<>();
+    private final Set<L> vertices = new HashSet<>();
+    private final List<Edge<L>> edges = new ArrayList<>();
     
     // Abstraction function:
     // represents a mutable weighted directed graph with labeled vertices
@@ -38,7 +38,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
     
     private void checkRep() {
         
-        for (Edge e : edges) {
+        for (Edge<L> e : edges) {
             assert e.getWeight() > 0;
             assert vertices.contains(e.getSource());
             assert vertices.contains(e.getTarget());
@@ -53,17 +53,17 @@ public class ConcreteEdgesGraph implements Graph<String> {
     }
         
         
-    @Override public boolean add(String vertex) {
+    @Override public boolean add(L vertex) {
         return vertices.add(vertex);
         }    
     
-    @Override public int set(String source, String target, int weight) {
+    @Override public int set(L source, L target, int weight) {
         
         this.add(source);
         this.add(target);
         
         // need to check if edge already exists
-        for (Edge e: edges) {
+        for (Edge<L> e: edges) {
             if(e.getSource().equals(source) && e.getTarget().equals(target)) {
                 int previousWeight = e.getWeight();
                 edges.remove(e);
@@ -78,13 +78,13 @@ public class ConcreteEdgesGraph implements Graph<String> {
         }
         // no existing edge in graph...
         if (weight > 0) {
-            edges.add(new Edge(source, target, weight));
+            edges.add(new Edge<L>(source, target, weight));
         }
         this.checkRep();
         return 0;
     }
     
-    @Override public boolean remove(String vertex) {
+    @Override public boolean remove(L vertex) {
         if (!vertices.contains(vertex)) {
             return false;
         }
@@ -103,14 +103,14 @@ public class ConcreteEdgesGraph implements Graph<String> {
         
     }
     
-    @Override public Set<String> vertices() {
+    @Override public Set<L> vertices() {
         return this.vertices;
     }
     
-    @Override public Map<String, Integer> sources(String target) {
-        Map<String, Integer> sourcesMap = new HashMap<>();
+    @Override public Map<L, Integer> sources(L target) {
+        Map<L, Integer> sourcesMap = new HashMap<>();
         
-        for(Edge e : edges) {
+        for(Edge<L> e : edges) {
             if(e.getTarget().equals(target)) {
                 sourcesMap.put(e.getSource(), e.getWeight());
             }
@@ -118,10 +118,10 @@ public class ConcreteEdgesGraph implements Graph<String> {
         return sourcesMap;
     }
     
-    @Override public Map<String, Integer> targets(String source) {
-        Map<String, Integer> targetsMap = new HashMap<>();
+    @Override public Map<L, Integer> targets(L source) {
+        Map<L, Integer> targetsMap = new HashMap<>();
         
-        for(Edge e : edges) {
+        for(Edge<L> e : edges) {
             if(e.getSource().equals(source)) {
                 targetsMap.put(e.getTarget(), e.getWeight());
             }
@@ -134,7 +134,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
      */
     @Override public String toString() {
         String stringRep = "Vertices: ";
-        for(String v : vertices) {
+        for(L v : vertices) {
             stringRep = (stringRep + v + ", ");
         }
         stringRep = stringRep.replaceAll(", $", "");
@@ -155,10 +155,10 @@ public class ConcreteEdgesGraph implements Graph<String> {
  * <p>PS2 instructions: the specification and implementation of this class is
  * up to you.
  */
-class Edge {  
+class Edge<L> {  
     
-    private final String source; 
-    private final String target;
+    private final L source; 
+    private final L target;
     private final int weight;
     
     // Abstraction function:
@@ -171,7 +171,7 @@ class Edge {
     // Safety from rep exposure:
     //      - all fields are private, final, and immutable types
     
-    public Edge(String source, String target, int weight) {
+    public Edge(L source, L target, int weight) {
         this.source = source;
         this.target = target;
         this.weight = weight;
@@ -186,14 +186,14 @@ class Edge {
     /**
      * @return String source of edge
      */
-    public String getSource() {
+    public L getSource() {
         return this.source;
     }
     
     /**
      * @return String target of edge
      */
-    public String getTarget() {
+    public L getTarget() {
         return this.target;
     }
     
@@ -209,8 +209,8 @@ class Edge {
      * @param weight positive weight of edge
      * @return new edge object with updated weight (maintain immutability contract)
      */
-    public Edge setWeight(int weight) {
-        return new Edge(this.source, this.target, weight);
+    public Edge<L> setWeight(int weight) {
+        return new Edge<L>(this.source, this.target, weight);
     }
     
     
