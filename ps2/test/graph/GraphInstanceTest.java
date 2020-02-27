@@ -154,7 +154,6 @@ public abstract class GraphInstanceTest {
         Graph<String> graph = emptyInstance();
         
         assertEquals(0, graph.set("v1", "v2", 0));
-        assertEquals(0, graph.vertices().size());
         assertEquals(0, graph.targets("v1").size());
     }
     
