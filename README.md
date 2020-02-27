@@ -9,6 +9,7 @@ The themes of the class are to build software that is:
 3) Ready for change
 
 Link to course: https://ocw.mit.edu/ans7870/6/6.005/s16/
+
 Newer Spring 2020 course: https://web.mit.edu/6.031/www/sp20/
 
 The material covers the following:
