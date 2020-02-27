@@ -32,8 +32,6 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     // Testing strategy for ConcreteEdgesGraph.toString()
     //   - empty graph, vertices no edges, 1 edge, multiple edges
     
-    // TODO tests for ConcreteEdgesGraph.toString()
-    
     @Test
     public void testToStringEmptyGraph() {
         Graph<String> graph = emptyInstance();
@@ -68,8 +66,6 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     //      - create new edge object, modify existing edge
     //      - checkRep()
     
-    // TODO tests for operations of Edge
-    
     @Test
     public void testEdgeCreation() {
         Edge e = new Edge("v1", "v2", 10);
@@ -100,4 +96,5 @@ public class ConcreteEdgesGraphTest extends GraphInstanceTest {
     public void testEdgeCheckRepNoAssertion() {
         Edge e = new Edge("v1", "v2", 10);
     }
+
 }

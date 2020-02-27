@@ -31,12 +31,11 @@ public class ConcreteEdgesGraph implements Graph<String> {
     // Safety from rep exposure:
     //   - All fields are private and final 
     
-    // TODO constructor
     
     public ConcreteEdgesGraph() {
     }
       
-    // TODO checkRep
+    
     private void checkRep() {
         
         for (Edge e : edges) {
@@ -51,18 +50,9 @@ public class ConcreteEdgesGraph implements Graph<String> {
                     assert (!vertices.toArray()[i].equals(vertices.toArray()[j]));
                 }
             }
-        // check for...
+    }
         
         
-        }
-    
-        
-       
-
-    
-    
-   
-   
     @Override public boolean add(String vertex) {
         return vertices.add(vertex);
         }    
@@ -139,11 +129,9 @@ public class ConcreteEdgesGraph implements Graph<String> {
         return targetsMap;
     }
     
-    // TODO toString()
     /**
      * @return a string representation of the graph that includes the list of vertices and all the edges"
      */
-    
     @Override public String toString() {
         String stringRep = "Vertices: ";
         for(String v : vertices) {
@@ -167,9 +155,7 @@ public class ConcreteEdgesGraph implements Graph<String> {
  * <p>PS2 instructions: the specification and implementation of this class is
  * up to you.
  */
-class Edge {
-    
-    // TODO fields
+class Edge {  
     
     private final String source; 
     private final String target;
@@ -185,10 +171,6 @@ class Edge {
     // Safety from rep exposure:
     //      - all fields are private, final, and immutable types
     
-    
-    // TODO constructor
-   
-    
     public Edge(String source, String target, int weight) {
         this.source = source;
         this.target = target;
@@ -196,12 +178,9 @@ class Edge {
         checkRep();
     }
     
-    // TODO checkRep
     private void checkRep() {
         assert this.weight > 0;
     }
-    
-    // TODO methods
     
     
     /**
@@ -238,7 +217,6 @@ class Edge {
     /**
      * @return String representation of edge that includes source, target, weight
      */
-    // TODO toString()
     @Override public String toString() {
         return (this.source + " -> " + this.target + ": " + this.weight);
     }
