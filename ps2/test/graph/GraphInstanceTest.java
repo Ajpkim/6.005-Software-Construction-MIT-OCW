@@ -155,6 +155,7 @@ public abstract class GraphInstanceTest {
         
         assertEquals(0, graph.set("v1", "v2", 0));
         assertEquals(0, graph.targets("v1").size());
+        assertEquals(Collections.emptySet(), graph.targets("v1").keySet());  // also works
     }
     
     // testing remove()
