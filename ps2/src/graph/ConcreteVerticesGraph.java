@@ -4,7 +4,6 @@
 package graph;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -344,12 +343,10 @@ class Vertex<L> {
         return false;
     }
     
-    // TODO toString()
-    
     /**
      * @return String representation of vertex that includes sources and weights, targets and weights
      */
-    public String toString() {
+    @Override public String toString() {
     String stringRep;
     stringRep = "label: " + this.getLabel() + "\n" + 
                  "sources: x ---> " + this.getLabel() + "\n";

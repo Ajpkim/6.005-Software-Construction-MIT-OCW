@@ -9,15 +9,35 @@ public class Worksheet {
     
     public static void main(String[] args) {        
         
+        
+//      Graph<String> graph = new ConcreteEdgesGraph<String>();
+//      graph.add("v1");
+//      System.out.println(graph);
+//      
+//      System.out.println(graph.vertices());
+//      
+//      Set<String> verticesReference = graph.vertices();
+//      
+//      verticesReference.add("Woah");
+//      System.out.println(graph.vertices());
+        
+//      Edge<String> e = new Edge("v1", "v2", 10);
+//      System.out.println(e);
+//      
+//      System.out.println(e.getSource());
+//      String woah = e.getSource();
+//      
+//      woah = woah + " mistake";
+//      System.out.println(e.getSource());
+      
+      
 
-            Graph<String> graph = new ConcreteVerticesGraph();
-            
-            assertEquals(0, graph.set("v1", "v2", 0));
-            assertEquals(0, graph.targets("v1").size());
-            assertEquals(Collections.emptySet(), graph.targets("v1").keySet());  // also works
-        
-        
-        
+//            Graph<String> graph = new ConcreteVerticesGraph();
+//            
+//            assertEquals(0, graph.set("v1", "v2", 0));
+//            assertEquals(0, graph.targets("v1").size());
+//            assertEquals(Collections.emptySet(), graph.targets("v1").keySet());  // also works
+//        
         
 //        Graph<String> graph = new ConcreteVerticesGraph();
 //        graph.add("v1");

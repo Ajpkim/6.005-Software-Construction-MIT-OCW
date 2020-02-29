@@ -37,17 +37,18 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
       
     
     private void checkRep() {
-        
         for (Edge<L> e : edges) {
             assert e.getWeight() > 0;
             assert vertices.contains(e.getSource());
             assert vertices.contains(e.getTarget());
         }
-        
-        // check for duplicate vertices
-        for (int i = 0; i < vertices.size(); i++) {
-            for (int j = i + 1; j < vertices.size() - 1; j++) {
-                    assert (!vertices.toArray()[i].equals(vertices.toArray()[j]));
+        // check for duplicate vertices (conver to list to allow easy iterating) 
+        List<L> verticesList = new ArrayList<>();
+        verticesList.addAll(vertices);
+       
+        for (int i = 0; i < verticesList.size(); i++) {
+            for (int j = i + 1; j < verticesList.size() - 1; j++) {
+                    assert (!verticesList.get(i).equals(verticesList.get(j)));
                 }
             }
     }
@@ -65,6 +66,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         // need to check if edge already exists
         for (Edge<L> e: edges) {
             if(e.getSource().equals(source) && e.getTarget().equals(target)) {
+                // edge exists...
                 int previousWeight = e.getWeight();
                 edges.remove(e);
          
@@ -89,8 +91,8 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
             return false;
         }
         
-        List<Edge> edgesToRemove= new ArrayList<>();
-        for(Edge e : edges) {
+        List<Edge<L>> edgesToRemove= new ArrayList<>();
+        for(Edge<L> e : edges) {
             if (e.getSource().equals(vertex) || e.getTarget().equals(vertex)) {
                 edgesToRemove.add(e);
             }
@@ -104,7 +106,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
     }
     
     @Override public Set<L> vertices() {
-        return this.vertices;
+        return new HashSet<L>(vertices);
     }
     
     @Override public Map<L, Integer> sources(L target) {
@@ -140,7 +142,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         stringRep = stringRep.replaceAll(", $", "");
         stringRep = stringRep + "\n" + "Edges:";
         
-        for(Edge e : edges) {
+        for(Edge<L> e : edges) {
             stringRep = stringRep + "\n" + e.toString();
         }
         return stringRep;
@@ -181,7 +183,6 @@ class Edge<L> {
     private void checkRep() {
         assert this.weight > 0;
     }
-    
     
     /**
      * @return String source of edge
