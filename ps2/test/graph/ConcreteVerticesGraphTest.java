@@ -37,6 +37,22 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
     
     // TODO tests for ConcreteVerticesGraph.toString()
     
+    @Test
+    public void testToString() {
+        Graph<String> graph = emptyInstance();
+        graph.add("v1");
+        graph.add("v2");
+        graph.add("v3");
+
+        String stringRep = "Vertices:" + "\n" +
+                           "v1\n" +
+                           "v2\n" +
+                           "v3\n";
+        
+      assertEquals(stringRep, graph.toString());
+    }
+    
+    
     /*
      * Testing Vertex...
      */
@@ -145,13 +161,4 @@ public class ConcreteVerticesGraphTest extends GraphInstanceTest {
         
         assertEquals(stringRep, v1.toString());
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

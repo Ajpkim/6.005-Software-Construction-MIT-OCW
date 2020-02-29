@@ -28,7 +28,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     //      - no duplicate vertices
     
     // Safety from rep exposure:
-    //   TODO
+    //   all methods that return objects return defensively copied versions of data
     
     
     // constructor
@@ -36,6 +36,21 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
     }
     
     // TODO checkRep
+    public void checkRep() {
+        
+        // check for duplicate vertices (by vertex labels)
+        for (int i = 0; i < vertices.size(); i++){
+            for (int j = i + 1; j < vertices.size() - 1; j++) {
+                assert(! vertices.get(i).getLabel().equals(vertices.get(j).getLabel()));
+            }
+        }
+        // check for illegal weights (weight < 1)
+        for (Vertex<L> v : vertices) {
+            for (int weight : v.getTargetsMap().values()) {
+                assert (weight > 0);
+            }
+        }
+    }
     
     
     @Override public boolean add(L vertex) {
@@ -72,20 +87,18 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         this.add(target);
         int previousWeight = 0;
                                   
-        
         Vertex<L> sourceVertex = this.getVertex(source);
         Vertex<L> targetVertex = this.getVertex(target);
             
         // check if edge already exists...        
         if (! sourceVertex.getTargetsLabels().contains(target)) {
             
-            
             // edge doesn't already exist
             if (weight > 0) {  // add the edge                 
                 sourceVertex.addTarget(target, weight);
                 targetVertex.addSource(source, weight);
             }
-//                this.checkRep(); not implemented yet
+                this.checkRep(); 
             return previousWeight; // returns 0 whether we added or not (indicating edge didn't exist prior)
         }        
          
@@ -100,7 +113,7 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
             sourceVertex.addTarget(target, weight);
             targetVertex.addSource(source, weight);
         }
-//        this.checkRep(); not implemented yet
+        this.checkRep(); 
         return previousWeight;
     }
 
@@ -152,8 +165,14 @@ public class ConcreteVerticesGraph<L> implements Graph<L> {
         return targetsMap;
     }
     
-    // TODO toString()
-    
+    @Override public String toString() {
+        String stringRep = "Vertices:" + "\n";
+        
+        for (Vertex<L> v : vertices) {
+            stringRep = stringRep + v.getLabel() + "\n";
+        }
+   return stringRep;
+    }   
 }
 
 /**
