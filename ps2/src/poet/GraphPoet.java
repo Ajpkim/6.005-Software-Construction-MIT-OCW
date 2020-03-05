@@ -3,8 +3,12 @@
  */
 package poet;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 import graph.Graph;
 
@@ -55,9 +59,14 @@ public class GraphPoet {
     private final Graph<String> graph = Graph.empty();
     
     // Abstraction function:
-    //   TODO
+    //      - Represents an affinity graph of words in which the edges weight between w1 and w2 equals 
+    //      the numbers of times that w2 appears directly after w1 in the corpus text
+    
     // Representation invariant:
-    //   TODO
+    //      - All weights in the graph are > 0
+    //      - All vertices are unique 
+    //      - 
+    
     // Safety from rep exposure:
     //   TODO
     
@@ -68,7 +77,43 @@ public class GraphPoet {
      * @throws IOException if the corpus file cannot be found or read
      */
     public GraphPoet(File corpus) throws IOException {
-        throw new RuntimeException("not implemented");
+   
+        BufferedReader br; 
+        
+        try {
+            FileReader fileReader = new FileReader(corpus);
+            br = new BufferedReader(fileReader);
+            } 
+        catch (FileNotFoundException fnfex) {
+            System.out.println(fnfex.getMessage() + "the file was not found");
+            System.exit(0);
+        }
+        try {            
+            String line;
+            while((line = br.readLine()) != null) {
+                
+                
+            }
+              
+                // need to now parse the line String into words and build up the affinity graph
+                
+                // 1) split line into words - ignore punct and capitalization
+                // 2) check if word exists as vertex already
+                // 3) if not, add a new vertex and set edges to sources and targets - the adjacent words in line
+                // 4) if word vertex exists, set edges to source and target - either instantiating or updating the weights
+                
+                
+                // be sure to handle line breaks correctly
+               
+                graph.
+            }
+        
+        
+        
+        
+        
+        
+        
     }
     
     // TODO checkRep
