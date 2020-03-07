@@ -71,7 +71,11 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
                 edges.remove(e);
          
                 if (weight > 0) {
-                edges.add(e.setWeight(weight));                
+                    edges.add(e.setWeight(weight));
+                        
+//                    Edge<L> newEdge = new Edge<>(source, target, weight);
+//                    edges.add(newEdge);     // these both should work
+                
                 }
                 
                 this.checkRep();
@@ -109,6 +113,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         return new HashSet<L>(vertices);
     }
     
+    
     @Override public Map<L, Integer> sources(L target) {
         Map<L, Integer> sourcesMap = new HashMap<>();
         
@@ -130,6 +135,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
         }
         return targetsMap;
     }
+    
     
     /**
      * @return a string representation of the graph that includes the list of vertices and all the edges"
@@ -185,14 +191,14 @@ class Edge<L> {
     }
     
     /**
-     * @return String source of edge
+     * @return label of edge source
      */
     public L getSource() {
         return this.source;
     }
     
     /**
-     * @return String target of edge
+     * @return label of edge target
      */
     public L getTarget() {
         return this.target;

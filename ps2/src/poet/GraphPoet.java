@@ -8,6 +8,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.BreakIterator;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import graph.Graph;
@@ -56,7 +61,8 @@ import graph.Graph;
  */
 public class GraphPoet {
     
-    private final Graph<String> graph = Graph.empty();
+//    private final Graph<String> graph = Graph.empty();
+    Graph<String> graph = Graph.empty();
     
     // Abstraction function:
     //      - Represents an affinity graph of words in which the edges weight between w1 and w2 equals 
@@ -65,7 +71,7 @@ public class GraphPoet {
     // Representation invariant:
     //      - All weights in the graph are > 0
     //      - All vertices are unique 
-    //      - 
+    //      
     
     // Safety from rep exposure:
     //   TODO
@@ -77,44 +83,96 @@ public class GraphPoet {
      * @throws IOException if the corpus file cannot be found or read
      */
     public GraphPoet(File corpus) throws IOException {
-   
-        BufferedReader br; 
+        
+        String text = GetTextFromFile(corpus);
+        List<String> words = GetWordsFromString(text);
+        BuildAffinityGraph(words, graph);               
+    }
+    
+    
+    /**
+     *  Modifies the graph by building an affinity graph with the given list of words.
+     *  Implements a weighted directed graph. 
+     *  
+     * @param words: list<String> of words (parsed from corpus file)
+     * @param graph
+     */
+    public static void BuildAffinityGraph(List<String> words, Graph<String> graph) {
+        
+        String source;
+        String target;
+        int weight;
+            
+        for (int i = 1; i < words.size(); i++) {            
+            source = words.get(i - 1);
+            target = words.get(i);
+            weight = graph.targets(source).get(target) == null ? 1 : graph.targets(source).get(target) + 1; 
+            
+            graph.set(source, target, weight);
+        }     
+    }
+    
+    
+    /**
+     * Parses data from file into a string
+     * 
+     * @param file is file path to be read from 
+     * @return String of data read from file 
+     */
+    public static String GetTextFromFile(File file) {
+        
+        BufferedReader bufferedReader = null;
         
         try {
-            FileReader fileReader = new FileReader(corpus);
-            br = new BufferedReader(fileReader);
-            } 
+            FileReader fileReader = new FileReader(file);
+            bufferedReader = new BufferedReader(fileReader);
+        }
         catch (FileNotFoundException fnfex) {
             System.out.println(fnfex.getMessage() + "the file was not found");
             System.exit(0);
         }
-        try {            
+        
+        String text = "";  
+        try {                        
             String line;
-            while((line = br.readLine()) != null) {
-                
-                
+            while((line = bufferedReader.readLine()) != null) {
+                text = text + line + "\n";    
             }
-              
-                // need to now parse the line String into words and build up the affinity graph
-                
-                // 1) split line into words - ignore punct and capitalization
-                // 2) check if word exists as vertex already
-                // 3) if not, add a new vertex and set edges to sources and targets - the adjacent words in line
-                // 4) if word vertex exists, set edges to source and target - either instantiating or updating the weights
-                
-                
-                // be sure to handle line breaks correctly
-               
-                graph.
-            }
+        }
+        catch (IOException ioe) {
+            System.out.println(ioe.getMessage() + "error reading file");
+        }
         
-        
-        
-        
-        
-        
-        
+        return text;
     }
+    
+    
+    /**
+     * Create list of all the words that appear in text. Words that appear 
+     * multiple times in text will have multiple entries
+     * 
+     * @param text string to be parsed
+     * @return list<String> of every word in text 
+     */
+    public static List<String> GetWordsFromString(String text){
+        
+        List<String> words = new ArrayList<String>();
+        BreakIterator breakIterator = BreakIterator.getWordInstance();
+        breakIterator.setText(text);
+        int lastIndex = breakIterator.first();
+        int firstIndex;
+        
+        // Building word list
+        while (BreakIterator.DONE != lastIndex) {
+            firstIndex = lastIndex;
+            lastIndex = breakIterator.next();
+            if (lastIndex != BreakIterator.DONE && Character.isLetterOrDigit(text.charAt(firstIndex))) {
+                words.add(text.substring(firstIndex, lastIndex).toLowerCase());
+            }
+        }
+        return words;
+    }
+    
     
     // TODO checkRep
     
@@ -125,7 +183,111 @@ public class GraphPoet {
      * @return poem (as described above)
      */
     public String poem(String input) {
-        throw new RuntimeException("not implemented");
+        
+        // for every input source/target pair I need to check if there is a vertex with source as source 
+        // and target as target and if yes then insert the option that maximizes 2 edge length.
+        
+        
+        // how to iterate through the input string? 
+        // could use a break iterator to set source and target...
+        // issue with moving to list is that I need to preserve the punctuation of original input string
+        // another issue is manipulating the string while iterating through it.
+        
+        
+        // break iterator to identify each source/target pair 
+        // BreakIterator does have a last() method that could be helpful.
+        
+        // So maybe I iterate through input with break iterator identifying possible bridge word opportunities,
+        // track the index of next break after target... don't need to track since next will automove the iterator
+        // variables to track locations will be
+        //      - sourceStart
+        //      - sourceEnd
+        //      - targetStart
+        //      - targetEnd
+        //      --> these will allow me to pull out the words from string for analysis
+        // then I will insert bridge word into string copy... and track how far up I've moved the index?
+        // if I keep a running tally of how much I've moved the index then I should be able to insert bridge
+        // words at the correct locations. 
+
+        // BreakIterator.next() does point to the end of word A and beginning of adjacent word B
+        
+        BreakIterator breakIterator = BreakIterator.getWordInstance();
+        breakIterator.setText(input);
+        
+        String poem = "" + input;
+        
+        int indexShift = 0;
+        int sourceStart = breakIterator.first();
+        int sourceEnd = breakIterator.next();
+        int targetStart = breakIterator.next();
+        int targetEnd = breakIterator.next();      
+
+        String source;
+        String target;
+        String bridgeWord;        
+        
+        while(targetEnd < input.length()) {
+            
+            source = input.substring(sourceStart, sourceEnd).toLowerCase();
+            target = input.substring(targetStart, targetEnd).toLowerCase();
+
+            bridgeWord = FindBridgeWord(source, target);
+            
+            if (bridgeWord != "") { 
+            
+                poem = poem.substring(0, targetStart + indexShift) 
+                        + bridgeWord + " " + poem.substring(targetStart + indexShift);
+            
+                indexShift += bridgeWord.length() + 1;
+            }
+            
+            sourceStart = targetStart;
+            sourceEnd = targetEnd;
+            targetStart = breakIterator.next();
+            
+            targetEnd = breakIterator.next();
+            if (targetEnd == BreakIterator.DONE) {
+                targetEnd = input.length();
+            }            
+        }
+        return poem;
+    }
+
+    
+    public String FindBridgeWord(String source, String target) {
+        
+        String bridgeWord = "";
+        
+        if (!graph.vertices().contains(source) || !graph.vertices().contains(target)) {
+            return bridgeWord;
+        }
+
+        List<String> verticesList = new ArrayList<>();
+        verticesList.addAll(graph.vertices());
+        
+        String word;
+        int best = 0;
+        int w1;
+        int w2;
+        
+        for (int i = 0; i < verticesList.size(); i++) {
+            
+            word = verticesList.get(i);
+            
+            if (graph.sources(word).containsKey(source)) {
+                w1 = graph.sources(word).get(source);
+            
+                if (graph.targets(word).containsKey(target)) {
+                    w2 = graph.targets(word).get(target);
+                
+                    if (best < w1 + w2) {
+                        best = w1 + w2;                        
+                        bridgeWord = word;
+                    }                
+                } 
+            }
+        }
+        return bridgeWord;
     }
     
     // TODO toString()
