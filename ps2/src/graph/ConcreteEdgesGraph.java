@@ -42,7 +42,7 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
             assert vertices.contains(e.getSource());
             assert vertices.contains(e.getTarget());
         }
-        // check for duplicate vertices (conver to list to allow easy iterating) 
+        // check for duplicate vertices (convert to list to allow easy iterating) 
         List<L> verticesList = new ArrayList<>();
         verticesList.addAll(vertices);
        
@@ -72,10 +72,6 @@ public class ConcreteEdgesGraph<L> implements Graph<L> {
          
                 if (weight > 0) {
                     edges.add(e.setWeight(weight));
-                        
-//                    Edge<L> newEdge = new Edge<>(source, target, weight);
-//                    edges.add(newEdge);     // these both should work
-                
                 }
                 
                 this.checkRep();

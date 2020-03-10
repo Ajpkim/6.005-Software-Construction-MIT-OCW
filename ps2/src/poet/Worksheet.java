@@ -1,5 +1,7 @@
 package poet;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import graph.ConcreteEdgesGraph;
 import graph.Graph;
@@ -31,22 +33,43 @@ public class Worksheet {
 //      System.out.println(targetEnd);
         
         
+        
+        
+        ///////////////// REGEX ////////////
+//        String regex = "\\w+(?:'(?![aeiou])\\w+\\b)?";
+//        
+//        String target = "Larry's sheep aren't coming home";
+//        
+//        Pattern pattern = Pattern.compile(".."); 
+//        Matcher matcher = pattern.matcher(target);
+////        Boolean result = matcher.matches();
+//        
+////        System.out.println(result);
+//        String s = target;
+//        String[] result = Regex.Matches(s, "[\\w+('(s|d|t|ve|m))?]")
+                
+        
+        
+        
+        // The breakiterator that locates where to insert bridges doesn't handle punctuation correctly. Commas and periods screw it up. 
+        
 ///////////////////////////// TESTING POEM() ///////////////////////////// 
         
       File corpus = new File("test/poet/JumpingCow.txt");
       
       GraphPoet graphPoet = new GraphPoet(corpus);
       
-      String input = "the cow jumped over the moon.";
+      String input = "the cow... jumped over the moon. It was a lovely night";
       String poem = graphPoet.poem(input);
       
       System.out.println("original input: " + input);
       System.out.println("resulting poem: " + poem);
-            
-      
+//            
+
       
       // so i know that FindBridgeWord is being called correctly in the correct location
       // for some reason it's not finding the correct bridge words always
+      
       
   
 //      List<String> verticesList = new ArrayList<>();  // create list to iterate through

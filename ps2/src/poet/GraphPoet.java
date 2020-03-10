@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import graph.Graph;
 
@@ -61,8 +63,7 @@ import graph.Graph;
  */
 public class GraphPoet {
     
-//    private final Graph<String> graph = Graph.empty();
-    Graph<String> graph = Graph.empty();
+    private final Graph<String> graph = Graph.empty();
     
     // Abstraction function:
     //      - Represents an affinity graph of words in which the edges weight between w1 and w2 equals 
@@ -71,10 +72,11 @@ public class GraphPoet {
     // Representation invariant:
     //      - All weights in the graph are > 0
     //      - All vertices are unique 
-    //      
     
     // Safety from rep exposure:
-    //   TODO
+    //   - only field is private final graph
+    //   - constructor only takes a File object and there are no static methods to modify graph once created
+    //   - no accessible references to mutable properties
     
     /**
      * Create a new poet with the graph from corpus (as described above).
@@ -97,7 +99,7 @@ public class GraphPoet {
      * @param words: list<String> of words (parsed from corpus file)
      * @param graph
      */
-    public static void BuildAffinityGraph(List<String> words, Graph<String> graph) {
+    public void BuildAffinityGraph(List<String> words, Graph<String> graph) {
         
         String source;
         String target;
@@ -119,7 +121,7 @@ public class GraphPoet {
      * @param file is file path to be read from 
      * @return String of data read from file 
      */
-    public static String GetTextFromFile(File file) {
+    public String GetTextFromFile(File file) {
         
         BufferedReader bufferedReader = null;
         
@@ -154,7 +156,7 @@ public class GraphPoet {
      * @param text string to be parsed
      * @return list<String> of every word in text 
      */
-    public static List<String> GetWordsFromString(String text){
+    public List<String> GetWordsFromString(String text){
         
         List<String> words = new ArrayList<String>();
         BreakIterator breakIterator = BreakIterator.getWordInstance();
@@ -173,8 +175,12 @@ public class GraphPoet {
         return words;
     }
     
+    public void checkRep() {
+        for (String v : graph.vertices()) {
+            assert v.equals(v.toLowerCase());            
+        }   
+    }
     
-    // TODO checkRep
     
     /**
      * Generate a poem.
@@ -183,34 +189,7 @@ public class GraphPoet {
      * @return poem (as described above)
      */
     public String poem(String input) {
-        
-        // for every input source/target pair I need to check if there is a vertex with source as source 
-        // and target as target and if yes then insert the option that maximizes 2 edge length.
-        
-        
-        // how to iterate through the input string? 
-        // could use a break iterator to set source and target...
-        // issue with moving to list is that I need to preserve the punctuation of original input string
-        // another issue is manipulating the string while iterating through it.
-        
-        
-        // break iterator to identify each source/target pair 
-        // BreakIterator does have a last() method that could be helpful.
-        
-        // So maybe I iterate through input with break iterator identifying possible bridge word opportunities,
-        // track the index of next break after target... don't need to track since next will automove the iterator
-        // variables to track locations will be
-        //      - sourceStart
-        //      - sourceEnd
-        //      - targetStart
-        //      - targetEnd
-        //      --> these will allow me to pull out the words from string for analysis
-        // then I will insert bridge word into string copy... and track how far up I've moved the index?
-        // if I keep a running tally of how much I've moved the index then I should be able to insert bridge
-        // words at the correct locations. 
-
-        // BreakIterator.next() does point to the end of word A and beginning of adjacent word B
-        
+                
         BreakIterator breakIterator = BreakIterator.getWordInstance();
         breakIterator.setText(input);
         
@@ -225,12 +204,14 @@ public class GraphPoet {
         String source;
         String target;
         String bridgeWord;        
+        boolean lastTarget = false;
         
-        while(targetEnd < input.length()) {
-            
+        
+        while(!lastTarget) {
+                    
             source = input.substring(sourceStart, sourceEnd).toLowerCase();
             target = input.substring(targetStart, targetEnd).toLowerCase();
-
+                        
             bridgeWord = FindBridgeWord(source, target);
             
             if (bridgeWord != "") { 
@@ -241,14 +222,35 @@ public class GraphPoet {
                 indexShift += bridgeWord.length() + 1;
             }
             
+            if (targetEnd == input.length()) { 
+                lastTarget = true;
+                break;
+            }
+                        
             sourceStart = targetStart;
             sourceEnd = targetEnd;
             targetStart = breakIterator.next();
-            
             targetEnd = breakIterator.next();
+            
             if (targetEnd == BreakIterator.DONE) {
                 targetEnd = input.length();
-            }            
+            }
+            
+            target = input.substring(targetStart, targetEnd);
+            
+            while (target.equals(".") || target.equals(",") || target.equals(" ")) { 
+                    
+                    targetStart = targetEnd;
+                    targetEnd = breakIterator.next();
+                    
+                    if (targetEnd == BreakIterator.DONE) {
+                        targetEnd = input.length();
+                    }
+                    
+                    target = input.substring(targetStart, targetEnd);
+                    
+            }
+            
         }
         return poem;
     }
@@ -290,6 +292,9 @@ public class GraphPoet {
         return bridgeWord;
     }
     
-    // TODO toString()
+    @Override public String toString() {
+        String rep = "I am a graphpoet. Feed input to my poem() method and I will create poetry based on my affinity graph";
+        return rep;
+    }
     
 }

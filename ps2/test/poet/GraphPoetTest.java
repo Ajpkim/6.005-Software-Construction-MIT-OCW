@@ -52,7 +52,7 @@ public class GraphPoetTest {
     
     @Test
     public void testGraphPoetMultipleBridgeWordsSingleWeight() throws IOException {
-        File corpusText = new File("test/poet/TestMultipleBridgeWordsSingleWeight.txt");
+        File corpusText = new File("test/poet/TestMultipleBridgeWordsSameSingleWeights.txt");
         GraphPoet graph = new GraphPoet(corpusText);
         String poem = graph.poem(testInput);
         String expected = "My absolute favorite color is blue, it constantly is so amazingly pretty.";
