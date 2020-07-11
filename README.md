@@ -3,10 +3,7 @@
 Materials and completed problem sets from MIT OCW course 6.005 Software Construction (originally taught Spring 2016, completed Spring 2020).
 
 This course builds on previous MIT courses, namely 6.0001 and 6.0002, and is taught in Java. 
-The themes of the class are to build software that is:
-1) Safe from bugs
-2) Easy to understand
-3) Ready for change
+
 
 Link to course: https://ocw.mit.edu/ans7870/6/6.005/s16/
 
@@ -42,4 +39,4 @@ Readings
 26: Little Languages
 27: Team Version Control
 
-Thank you MIT for providing these resources.
+Thanks MIT.
